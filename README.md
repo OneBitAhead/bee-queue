@@ -2,6 +2,17 @@
 ![bee-queue logo](https://raw.githubusercontent.com/bee-queue/bee-queue/master/bee-queue.png)
 [![npm Version][npm-image]][npm-url] [![Node.js CI](https://github.com/bee-queue/bee-queue/actions/workflows/node.js.yml/badge.svg)](https://github.com/bee-queue/bee-queue/actions/workflows/node.js.yml) [![Coverage Status][coveralls-image]][coveralls-url]
 
+
+
+> **This fork**: Adjustments to the excellent bee-queue library: 
+> * The dependencies on "old" promise-based libraries have been completely removed. Now, only "redis" remains as a dependency. 
+> * Additionally, a bundled dist version has been added to allow bee-queue (an internal requirement for us in a project) to be used bundled (via esbuild). For this, mainly the loading of the Lua scripts had to be slightly adjusted.
+> * Near Future: Maybe we will change the internal redis library to a newer version 5?
+>
+
+
+
+
 A simple, fast, robust job/task queue for Node.js, backed by Redis.
 
 - Simple: ~1000 LOC, and minimal dependencies.

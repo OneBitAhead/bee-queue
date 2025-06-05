@@ -37,7 +37,8 @@
     "package.json",
     "index.js",
     "index.d.ts",
-    "lib"
+    "lib",
+    "dist"
   ],
   "scripts": {
     "ci": "if node -e '({...0})' 2>/dev/null && node -e '\"\".trimEnd()' 2>/dev/null; then npm run lint && npm run ci:coverage && if [ -z \"$CI\" ]; then npm run ci:commitlint; fi; else ava; fi",
