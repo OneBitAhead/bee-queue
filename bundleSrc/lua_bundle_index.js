@@ -1,30 +1,28 @@
 'use strict';
-
-const fsp = require('node:fs/promises');
 const crypto = require('node:crypto');
-const path = require('node:path');
+
+const luaScripts = {
+    "addDelayedJob": require("./addDelayedJob.lua"),
+    "addJob": require("./addJob.lua"),
+    "checkStalledJobs": require("./checkStalledJobs.lua"),
+    "raiseDelayedJobs": require("./raiseDelayedJobs.lua"),
+    "removeJob": require("./removeJob.lua")     
+}
 
 const scripts = {};
 const shas = {};
-let scriptsRead = false;
-let scriptsPromise = null;
 
-async function readScript(file) {
-  
-  var script = await fsp.readFile(path.join(__dirname, file), 'utf8')  
-  const name = file.slice(0, -4);
+function readScript(name, script) {
   scripts[name] = script;
   const hash = crypto.createHash('sha1');
   hash.update(script);
-  shas[name] = hash.digest('hex');
-  
+  shas[name] = hash.digest('hex'); 
 }
 
-async function readScripts() {
-  if (scriptsRead) return scriptsPromise;
-  scriptsRead = true;
-  var files = await fsp.readdir(__dirname);
-  return await Promise.all(files.filter((file) => file.endsWith('.lua')).map(readScript));
+function readScripts() {
+  for(var x in luaScripts){
+    readScript(x, luaScripts[x])
+  }  
 }
 
 async function loadScriptIfMissing(client, scriptKey) {
@@ -41,8 +39,7 @@ async function loadScriptIfMissing(client, scriptKey) {
 }
 
 async function buildCache(client) {
-  // We could theoretically pipeline this, but it's pretty insignificant.
-  await readScripts()
+  readScripts()
   return Promise.all(Object.keys(shas).map((key) => loadScriptIfMissing(client, key)))
 }
 

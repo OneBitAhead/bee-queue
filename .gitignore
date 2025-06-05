@@ -43,3 +43,7 @@ notes.txt
 # Cruft from failed Docker builds
 entrypoint.sh
 package-min.json
+
+# test files
+testme.js
+worker.js

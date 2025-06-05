@@ -4,8 +4,6 @@
   "description": "A simple, fast, robust job/task queue, backed by Redis.",
   "main": "index.js",
   "dependencies": {
-    "p-finally": "^2.0.0",
-    "promise-callbacks": "^3.8.1",
     "redis": "^3.1.2"
   },
   "devDependencies": {
@@ -49,7 +47,8 @@
     "coverage": "nyc ava",
     "lint": "eslint . && prettier --check '**/*.(html|json|md|sublime-project|ts|yml)'",
     "report": "npm run coverage && nyc report --reporter=html",
-    "test": "npm run lint && ava"
+    "test": "npm run lint && ava",
+    "bundle": "esbuild index.js --bundle --platform=node --format=cjs --external:redis --outfile=beeQueueBundle.js --define:process.env.LUA_BUNDLE_MODE='\"1\"' --loader:.lua=text"
   },
   "keywords": [
     "task",
